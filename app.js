@@ -1,5 +1,6 @@
+const pokemons = 'pokemon'
 const game = {
-  Party: [],
+  party: [],
   gyms: [
     { location: 'Pewter City', completed: false, difficulty: 1 },
     { location: 'Cerulean City', completed: false, difficulty: 2 },
@@ -14,19 +15,10 @@ const game = {
     { name: 'potion', quantity: 4 },
     { name: 'pokeball', quantity: 8 },
     { name: 'rare candy', quantity: 99 }
-  ],
-  data: [{ name: 'pokemon', quantity: 151 }],
-  
-  [{ Type: 'typepokemon', Type: water || grass || fire }],
-
-  [{ HP: 'hitpoint', quantity: 100 }],
-
-  [{ Starter: 'starterpokemon', quantity: 3 }],
-
-  [{ Option: 'pokemonOpions', Starter: pokemon[1] (Bulbasaur) || pokemon[4] (Charmander) || pokemon[7] (Squirtle) || pokemon[25] (Pikachu)}]
+  ]
 }
 
-console.dir(game, { maxArrayLength: null })
+console.dir(pokemon, { maxArrayLength: null })
 
 console.log(game)
 
@@ -34,13 +26,12 @@ game.difficulty = 'Medium'
 console.log(game.difficulty)
 
 const starterPokemon = pokemon[0]
-game.Party.push(starterPokemon)
-console.log(game.Party)
+game.party.push(starterPokemon)
+console.log(game.party)
 
-const pokemon2 = pokemon[1]
-const pokemon3 = pokemon[2]
-const pokemon4 = pokemon[3]
-game.Party.push(pokemon2, pokemon3, pokemon4)
+game.party.push(pokemon[1])
+game.party.push(pokemon[2])
+game.party.push(pokemon[3])
 console.log(game.party)
 
 game.gyms.forEach((gym) => {
@@ -51,30 +42,37 @@ game.gyms.forEach((gym) => {
 console.log(game.gyms)
 
 const evolvedPokemon = pokemon[1]
-game.party.splice(0, 1, evolvedPokemon)
+const starterIndex = game.party.findIndex((pokemon) => pokemon.number === 1)
+game.party.splice(starterIndex, 1, evolvedPokemon)
 console.log(game.party)
 
 game.party.forEach((pokemon) => {
   console.log(pokemon.name)
 })
 
-pokemon.forEach((pokemon) => {
-  if (pokemon.starter) {
-    console.log(pokemon.name)
-  }
+const starterPokemons = pokemon.filter((pokemon) => pokemon.starter)
+starterPokemons.forEach((pokemon) => {
+  console.log(pokemon.name)
 })
 
-game.catchPokemon = let(pokemonObj)
-this.party.push(pokemonObj)
+game.catchPokemon = function (pokemonObj) {
+  this.party.push(pokemonObj)
+}
+
 game.catchPokemon(pokemon[4])
 console.log(game.party)
 
-game.catchPokemon = let(pokemonObj)
-this.party.push(pokemonObj)
-const pokeball = this.items.find((item) => item.name === 'pokeball')
-if (pokeball) {
-  pokeball.quantity = 1
+game.catchPokemon = function (pokemonObj) {
+  this.party.push(pokemonObj)
+
+  const pokeball = this.items.find((item) => item.name === 'pokeball')
+  if (pokeball) {
+    pokeball.quantity--
+  }
 }
+
+game.catchPokemon(pokemon[5])
+console.log(game.items)
 
 game.gyms.forEach((gym) => {
   if (gym.difficulty < 6) {
@@ -82,3 +80,32 @@ game.gyms.forEach((gym) => {
   }
 })
 console.log(game.gyms)
+
+game.gymStatus = function () {
+  const gymTally = { completed: 0, incomplete: 0 }
+  this.gyms.forEach((gym) => {
+    if (gym.completed) {
+      gymTally.completed++
+    } else {
+      gymTally.incomplete++
+    }
+  })
+  console.log(gymTally)
+}
+
+game.gymStatus()
+
+game.partyCount = function () {
+  return this.party.length
+}
+
+console.log(game.partyCount())
+
+game.gyms.forEach((gym) => {
+  if (gym.difficulty < 8) {
+    gym.completed = true
+  }
+})
+console.log(game.gyms)
+
+console.log(game)
