@@ -1,4 +1,4 @@
-const pokemons = 'pokemon'
+const pokemon = require('./data.js')
 const game = {
   party: [],
   gyms: [
@@ -18,76 +18,62 @@ const game = {
   ]
 }
 
-console.dir(pokemon, { maxArrayLength: null })
-
-console.log(game)
-
 game.difficulty = 'Medium'
-console.log(game.difficulty)
 
-const starterPokemon = pokemon[0]
+const starterPokemon = pokemon.find((p) => p.starter)
 game.party.push(starterPokemon)
-console.log(game.party)
-
-game.party.push(pokemon[1])
-game.party.push(pokemon[2])
-game.party.push(pokemon[3])
-console.log(game.party)
+const additionalPokemon = [
+  pokemon.find((p) => p.number === 4),
+  pokemon.find((p) => p.number === 7),
+  pokemon.find((p) => p.number === 25)
+]
+game.party.push(...additionalPokemon)
 
 game.gyms.forEach((gym) => {
   if (gym.difficulty < 3) {
     gym.completed = true
   }
 })
-console.log(game.gyms)
 
-const evolvedPokemon = pokemon[1]
-const starterIndex = game.party.findIndex((pokemon) => pokemon.number === 1)
-game.party.splice(starterIndex, 1, evolvedPokemon)
-console.log(game.party)
+const evolvedPokemon = pokemon.find(
+  (p) => p.number === starterPokemon.number + 1
+)
+game.party.splice(0, 1, evolvedPokemon)
 
 game.party.forEach((pokemon) => {
   console.log(pokemon.name)
 })
 
-const starterPokemons = pokemon.filter((pokemon) => pokemon.starter)
-starterPokemons.forEach((pokemon) => {
+const starterPokemonList = pokemon.filter((p) => p.starter)
+starterPokemonList.forEach((pokemon) => {
   console.log(pokemon.name)
 })
 
 game.catchPokemon = function (pokemonObj) {
   this.party.push(pokemonObj)
-}
 
-game.catchPokemon(pokemon[4])
-console.log(game.party)
-
-game.catchPokemon = function (pokemonObj) {
-  this.party.push(pokemonObj)
-
-  const pokeball = this.items.find((item) => item.name === 'pokeball')
-  if (pokeball) {
-    pokeball.quantity--
+  const pokeballItem = this.items.find((item) => item.name === 'pokeball')
+  if (pokeballItem) {
+    pokeballItem.quantity -= 1
   }
 }
 
-game.catchPokemon(pokemon[5])
-console.log(game.items)
+const wildPokemon = pokemon.find((p) => p.number === 59)
+game.catchPokemon(wildPokemon)
 
 game.gyms.forEach((gym) => {
   if (gym.difficulty < 6) {
     gym.completed = true
   }
 })
-console.log(game.gyms)
 
 game.gymStatus = function () {
   const gymTally = { completed: 0, incomplete: 0 }
   this.gyms.forEach((gym) => {
     if (gym.completed) {
-      gymTally.completed++
+      gymTally.completed += 1
     } else {
-      gymTally.incomplete++
+      gymTally.incomplete += 1
     }
   })
   console.log(gymTally)
@@ -99,13 +85,12 @@ game.partyCount = function () {
   return this.party.length
 }
 
-console.log(game.partyCount())
+console.log('Number of Pokémon in the party:', game.partyCount())
 
 game.gyms.forEach((gym) => {
   if (gym.difficulty < 8) {
     gym.completed = true
   }
 })
-console.log(game.gyms)
 
 console.log(game)
